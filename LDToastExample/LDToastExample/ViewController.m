@@ -19,10 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-    tableView.dataSource = self;
-    tableView.delegate = self;
-    [self.view addSubview:tableView];
+    self.navigationItem.title = @"LDToastExample";
     // Do any additional setup after loading the view from its nib.
 }
 
