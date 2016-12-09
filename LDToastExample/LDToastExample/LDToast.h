@@ -64,7 +64,19 @@
  *  @param duration     停留时间
  *  @param range        高亮范围
  */
-+ (void)showToastAtLeftBottomWithText:(NSString *)text duration:(CGFloat)duration highlightRange:(NSRange)range;
++ (void)showCustomToastWithText:(NSString *)text duration:(CGFloat)duration highlightRange:(NSRange)range;
+/**
+ *  左下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色+高亮字体大小+高亮字体颜色
+ *
+ *  @param text                 内容
+ *  @param duration             停留时间
+ *  @param range                高亮范围
+ *  @param fontSize             字体大小（传0则使用默认值）
+ *  @param textColor            字体颜色（传nil则使用默认值）
+ *  @param highlightFontSize    高亮字体大小（传0则使用默认值）
+ *  @param highlightColor       高亮字体颜色（传nil则使用默认值）
+ */
++ (void)showCustomToastWithText:(NSString *)text duration:(CGFloat)duration highlightRange:(NSRange)range fontSize:(CGFloat)fontSize textColor:(UIColor *)textColor highlightFontSize:(CGFloat)highlightFontSize highlightColor:(UIColor *)highlightColor;
 
 #pragma mark-下方显示高亮文字
 /**
@@ -91,37 +103,28 @@
  */
 + (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration highlightRange:(NSRange)range;
 /**
- *  下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小
- *
- *  @param text         内容
- *  @param offset       距底端距离
- *  @param duration     停留时间
- *  @param range        高亮范围
- *  @param fontSize     字体大小
- */
-+ (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration highlightRange:(NSRange)range fontSize:(CGFloat)fontSize;
-/**
  *  下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色
  *
  *  @param text         内容
  *  @param offset       距底端距离
  *  @param duration     停留时间
  *  @param range        高亮范围
- *  @param fontSize     字体大小
- *  @param textColor    字体颜色
+ *  @param fontSize     字体大小（传0则使用默认值）
+ *  @param textColor    字体颜色（传nil则使用默认值）
  */
 + (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration highlightRange:(NSRange)range fontSize:(CGFloat)fontSize textColor:(UIColor *)textColor;
 /**
- *  下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色+高亮字体颜色
+ *  下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色+高亮字体大小+高亮字体颜色
  *
- *  @param text             内容
- *  @param offset           距底端距离
- *  @param duration         停留时间
- *  @param range            高亮范围
- *  @param fontSize         字体大小
- *  @param textColor        字体颜色
- *  @param highlightColor   高亮字体颜色
+ *  @param text                 内容
+ *  @param offset               距底端距离
+ *  @param duration             停留时间
+ *  @param range                高亮范围
+ *  @param fontSize             字体大小（传0则使用默认值）
+ *  @param textColor            字体颜色（传nil则使用默认值）
+ *  @param highlightFontSize    高亮字体大小（传0则使用默认值）
+ *  @param highlightColor       高亮字体颜色（传nil则使用默认值）
  */
-+ (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration highlightRange:(NSRange)range fontSize:(CGFloat)fontSize textColor:(UIColor *)textColor highlightColor:(UIColor *)highlightColor;
++ (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration highlightRange:(NSRange)range fontSize:(CGFloat)fontSize textColor:(UIColor *)textColor highlightFontSize:(CGFloat)highlightFontSize highlightColor:(UIColor *)highlightColor;
 
 @end

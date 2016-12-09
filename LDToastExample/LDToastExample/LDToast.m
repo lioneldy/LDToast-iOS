@@ -47,7 +47,7 @@
         textLabel.numberOfLines = 0;
         
         _contentView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, textLabel.frame.size.width, textLabel.frame.size.height)];
-        //        _contentView.layer.cornerRadius = 8.0f;
+//        _contentView.layer.cornerRadius = 8.0f;
         _contentView.backgroundColor = ToastBackgroundColor;
         [_contentView addSubview:textLabel];
         [_contentView addTarget:self action:@selector(toastTaped:) forControlEvents:UIControlEventTouchDown];
@@ -58,37 +58,43 @@
     return self;
 }
 
-- (id)initWithText:(NSString *)text highlightRange:(NSRange)range fontSize:(CGFloat)fontSize textColor:(UIColor *)textColor highlightColor:(UIColor *)highlightColor{
+- (id)initWithText:(NSString *)text highlightRange:(NSRange)range fontSize:(CGFloat)fontSize textColor:(UIColor *)textColor highlightFontSize:(CGFloat)highlightFontSize highlightColor:(UIColor *)highlightColor{
     if (self = [super init]) {
         NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc]initWithString:text];
         [attributedStr addAttribute:NSFontAttributeName
-                              value:[UIFont boldSystemFontOfSize:fontSize]
+                              value:[UIFont boldSystemFontOfSize:((fontSize == 0) ? ToastFontSize : fontSize)]
                               range:NSMakeRange(0, [text length])];
-        [attributedStr addAttribute:NSForegroundColorAttributeName
-                              value:highlightColor
+        [attributedStr addAttribute:NSFontAttributeName
+                              value:[UIFont boldSystemFontOfSize:((highlightFontSize == 0) ? ToastFontSize : highlightFontSize)]
                               range:range];
-        UIFont *font = [UIFont boldSystemFontOfSize:fontSize];
-        NSDictionary * dict=[NSDictionary dictionaryWithObject: font forKey:NSFontAttributeName];
-        CGRect rect=[text boundingRectWithSize:CGSizeMake(280, CGFLOAT_MAX) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil];
+        [attributedStr addAttribute:NSForegroundColorAttributeName
+                              value:((highlightColor == nil) ? ToastHighlightColor : highlightColor)
+                              range:range];
+        UIFont *font = [UIFont boldSystemFontOfSize:ToastFontSize];
+        NSDictionary * dict=[NSDictionary dictionaryWithObject:font
+                                                        forKey:NSFontAttributeName];
+        CGRect rect=[text boundingRectWithSize:CGSizeMake(280, CGFLOAT_MAX)
+                                       options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin
+                                    attributes:dict context:nil];
         UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,rect.size.width + 40, rect.size.height+ 20)];
         
         textLabel.backgroundColor = [UIColor clearColor];
-        textLabel.textColor = textColor;
+        textLabel.textColor = ((textColor == nil) ? ToastTextColor : textColor);
         textLabel.textAlignment = NSTextAlignmentCenter;
         textLabel.attributedText = attributedStr;
         textLabel.numberOfLines = 0;
         
         _contentView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, textLabel.frame.size.width, textLabel.frame.size.height)];
         _contentView.backgroundColor = ToastBackgroundColor;
-        //        _contentView.layer.cornerRadius = 8.0f;//toast背景框圆角
+//        _contentView.layer.cornerRadius = 8.0f;//toast背景框圆角
         [_contentView addSubview:textLabel];
         [_contentView addTarget:self action:@selector(toastTaped:) forControlEvents:UIControlEventTouchDown];
         _contentView.alpha = 0.0f;
         _duration = ToastDispalyDuration;
     }
-    
     return self;
 }
+
 
 - (void)deviceOrientationDidChanged:(NSNotification *)notify{
     [self hideAnimation];
@@ -157,12 +163,38 @@
 }
 
 #pragma mark-左下角显示部分高亮文字
-+ (void)showToastAtLeftBottomWithText:(NSString *)text duration:(CGFloat)duration highlightRange:(NSRange)range {
++ (void)showCustomToastWithText:(NSString *)text
+                       duration:(CGFloat)duration
+                 highlightRange:(NSRange)range {
+    [LDToast showCustomToastWithText:text
+                            duration:duration
+                      highlightRange:range
+                            fontSize:ToastFontSize
+                           textColor:ToastTextColor
+                   highlightFontSize:ToastFontSize
+                      highlightColor:ToastHighlightColor];
+}
+
++ (void)showCustomToastWithText:(NSString *)text
+                       duration:(CGFloat)duration
+                 highlightRange:(NSRange)range
+                       fontSize:(CGFloat)fontSize
+                      textColor:(UIColor *)textColor
+              highlightFontSize:(CGFloat)highlightFontSize
+                 highlightColor:(UIColor *)highlightColor {
     UIFont *font = [UIFont boldSystemFontOfSize:ToastFontSize];
-    NSDictionary * dict=[NSDictionary dictionaryWithObject: font forKey:NSFontAttributeName];
-    CGRect rect=[text boundingRectWithSize:CGSizeMake(250,CGFLOAT_MAX) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil];
+    NSDictionary * dict=[NSDictionary dictionaryWithObject: font
+                                                    forKey:NSFontAttributeName];
+    CGRect rect=[text boundingRectWithSize:CGSizeMake(250,CGFLOAT_MAX)
+                                   options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin
+                                attributes:dict context:nil];
     CGSize size = CGSizeMake([[UIScreen mainScreen] bounds].size.width, rect.size.height + 20);
-    LDToast *toast = [[LDToast alloc]initWithText:text highlightRange:range fontSize:ToastFontSize textColor:ToastTextColor highlightColor:ToastHighlightColor];
+    LDToast *toast = [[LDToast alloc]initWithText:text
+                                   highlightRange:range
+                                         fontSize:fontSize
+                                        textColor:textColor
+                                highlightFontSize:highlightFontSize
+                                   highlightColor:highlightColor];
     [toast setDuration:duration];
     [toast showAtBottomWithSize:size];
 }
@@ -172,7 +204,8 @@
     [LDToast showCenterWithText:text duration:ToastDispalyDuration];
 }
 
-+ (void)showCenterWithText:(NSString *)text duration:(CGFloat)duration{
++ (void)showCenterWithText:(NSString *)text
+                  duration:(CGFloat)duration {
     LDToast *toast = [[LDToast alloc] initWithText:text];
     [toast setDuration:duration];
     [toast show];
@@ -183,15 +216,19 @@
     [LDToast showTopWithText:text  topOffset:ToastSpace duration:ToastDispalyDuration];
 }
 
-+ (void)showTopWithText:(NSString *)text duration:(CGFloat)duration {
++ (void)showTopWithText:(NSString *)text
+               duration:(CGFloat)duration {
     [LDToast showTopWithText:text  topOffset:ToastSpace duration:duration];
 }
 
-+ (void)showTopWithText:(NSString *)text topOffset:(CGFloat)topOffset {
++ (void)showTopWithText:(NSString *)text
+              topOffset:(CGFloat)topOffset {
     [LDToast showTopWithText:text  topOffset:topOffset duration:ToastDispalyDuration];
 }
 
-+ (void)showTopWithText:(NSString *)text topOffset:(CGFloat)topOffset duration:(CGFloat)duration {
++ (void)showTopWithText:(NSString *)text
+              topOffset:(CGFloat)topOffset
+               duration:(CGFloat)duration {
     LDToast *toast = [[LDToast alloc] initWithText:text];
     [toast setDuration:duration];
     [toast showFromTopOffset:topOffset];
@@ -199,27 +236,73 @@
 
 #pragma mark-下方显示高亮文字
 + (void)showBottomWithText:(NSString *)text {
-    [LDToast showBottomWithText:text offset:ToastSpace duration:ToastDispalyDuration highlightRange:ToastRange fontSize:ToastFontSize textColor:ToastTextColor highlightColor:ToastHighlightColor];
+    [LDToast showBottomWithText:text
+                         offset:ToastSpace
+                       duration:ToastDispalyDuration
+                 highlightRange:ToastRange
+                       fontSize:ToastFontSize
+                      textColor:ToastTextColor
+              highlightFontSize:ToastFontSize
+                 highlightColor:ToastHighlightColor];
 }
 
-+ (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration {
-    [LDToast showBottomWithText:text offset:offset duration:duration highlightRange:ToastRange fontSize:ToastFontSize textColor:ToastTextColor highlightColor:ToastHighlightColor];
++ (void)showBottomWithText:(NSString *)text
+                    offset:(CGFloat)offset
+                  duration:(CGFloat)duration {
+    [LDToast showBottomWithText:text
+                         offset:offset
+                       duration:duration
+                 highlightRange:ToastRange
+                       fontSize:ToastFontSize
+                      textColor:ToastTextColor
+              highlightFontSize:ToastFontSize
+                 highlightColor:ToastHighlightColor];
 }
 
-+ (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration highlightRange:(NSRange)range {
-    [LDToast showBottomWithText:text offset:offset duration:duration highlightRange:range fontSize:ToastFontSize textColor:ToastTextColor highlightColor:ToastHighlightColor];
++ (void)showBottomWithText:(NSString *)text
+                    offset:(CGFloat)offset
+                  duration:(CGFloat)duration
+            highlightRange:(NSRange)range {
+    [LDToast showBottomWithText:text
+                         offset:offset
+                       duration:duration
+                 highlightRange:range
+                       fontSize:ToastFontSize
+                      textColor:ToastTextColor
+              highlightFontSize:ToastFontSize
+                 highlightColor:ToastHighlightColor];
 }
 
-+ (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration highlightRange:(NSRange)range fontSize:(CGFloat)fontSize {
-    [LDToast showBottomWithText:text offset:offset duration:duration highlightRange:range fontSize:fontSize textColor:ToastTextColor highlightColor:ToastHighlightColor];
++ (void)showBottomWithText:(NSString *)text
+                    offset:(CGFloat)offset
+                  duration:(CGFloat)duration
+            highlightRange:(NSRange)range
+                  fontSize:(CGFloat)fontSize
+                 textColor:(UIColor *)textColor {
+    [LDToast showBottomWithText:text
+                         offset:offset
+                       duration:duration
+                 highlightRange:range
+                       fontSize:fontSize
+                      textColor:textColor
+              highlightFontSize:ToastFontSize
+                 highlightColor:ToastHighlightColor];
 }
 
-+ (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration highlightRange:(NSRange)range fontSize:(CGFloat)fontSize textColor:(UIColor *)textColor {
-    [LDToast showBottomWithText:text offset:offset duration:duration highlightRange:range fontSize:fontSize textColor:textColor highlightColor:ToastHighlightColor];
-}
-
-+ (void)showBottomWithText:(NSString *)text offset:(CGFloat)offset duration:(CGFloat)duration highlightRange:(NSRange)range fontSize:(CGFloat)fontSize textColor:(UIColor *)textColor highlightColor:(UIColor *)highlightColor {
-    LDToast *toast = [[LDToast alloc]initWithText:text highlightRange:range fontSize:fontSize textColor:textColor highlightColor:highlightColor];
++ (void)showBottomWithText:(NSString *)text
+                    offset:(CGFloat)offset
+                  duration:(CGFloat)duration
+            highlightRange:(NSRange)range
+                  fontSize:(CGFloat)fontSize
+                 textColor:(UIColor *)textColor
+         highlightFontSize:(CGFloat)highlightFontSize
+            highlightColor:(UIColor *)highlightColor {
+    LDToast *toast = [[LDToast alloc]initWithText:text
+                                   highlightRange:range
+                                         fontSize:fontSize
+                                        textColor:textColor
+                                highlightFontSize:highlightFontSize
+                                   highlightColor:highlightColor];
     [toast setDuration:duration];
     [toast showFromBottomOffset:offset];
 }

@@ -27,8 +27,8 @@
     if(_dataArr==nil) {
         _dataArr = @[@[@"中间显示",@"中间显示+自定义停留时间"],
                      @[@"顶端显示",@"顶端显示+自定义停留时间",@"顶端显示+自定义距顶端距离",@"顶端显示+自定义距顶端距离+自定义停留时间"],
-                     @[@"底部显示",@"底部显示+自定义距底部距离+自定义停留时间",@"下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间",@"下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小",@"下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色",@"下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色+高亮字体颜色"],
-                     @[@"左下方显示高亮文字"],
+                     @[@"底部显示",@"底部显示+自定义距底部距离+自定义停留时间",@"下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间",@"下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色",@"下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色+高亮字体颜色"],
+                     @[@"左下方显示高亮文字",@"左下方显示自定义高亮文字"],
                      ];
     }
     return _dataArr;
@@ -84,7 +84,8 @@
             /**
              *  中间显示+自定义停留时间
              */
-            [LDToast showCenterWithText:text duration:3.0];
+            [LDToast showCenterWithText:text
+                               duration:3.0];
         }
     }
     else if (indexPath.section==1) {
@@ -98,19 +99,23 @@
             /**
              *  顶端显示+自定义停留时间
              */
-            [LDToast showTopWithText:text duration:3.0];
+            [LDToast showTopWithText:text
+                            duration:3.0];
         }
         else if (indexPath.row==2) {
             /**
              *  顶端显示+自定义距顶端距离
              */
-            [LDToast showTopWithText:text topOffset:120.0];
+            [LDToast showTopWithText:text
+                           topOffset:120.0];
         }
         else if (indexPath.row==3) {
             /**
              *  顶端显示+自定义距顶端距离+自定义停留时间
              */
-            [LDToast showTopWithText:text topOffset:120.0 duration:3.0];
+            [LDToast showTopWithText:text
+                           topOffset:120.0
+                            duration:3.0];
         }
         
     }
@@ -125,39 +130,63 @@
             /**
              *  底部显示+自定义距顶端距离+自定义停留时间
              */
-            [LDToast showBottomWithText:text offset:150 duration:5];
+            [LDToast showBottomWithText:text
+                                 offset:150
+                               duration:5];
         }
         else if (indexPath.row==2) {
             /**
              *  下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间
              */
-            [LDToast showBottomWithText:text offset:150 duration:5 highlightRange:NSMakeRange(17, 2)];
+            [LDToast showBottomWithText:text
+                                 offset:150
+                               duration:5
+                         highlightRange:NSMakeRange(17, 2)];
         }
         else if (indexPath.row==3) {
             /**
-             *  下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小
+             *  下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色
              */
-            [LDToast showBottomWithText:text offset:150 duration:5 highlightRange:NSMakeRange(17, 2) fontSize:8];
+            [LDToast showBottomWithText:text
+                                 offset:150
+                               duration:5
+                         highlightRange:NSMakeRange(17, 2)
+                               fontSize:8
+                              textColor:[UIColor greenColor]];
         }
         else if (indexPath.row==4) {
             /**
-             *  下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色
-             */
-            [LDToast showBottomWithText:text offset:150 duration:5 highlightRange:NSMakeRange(17, 2) fontSize:8 textColor:[UIColor greenColor]];
-        }
-        else if (indexPath.row==5) {
-            /**
              *  下方显示+自定义距底端距离+自定义高亮文字+自定义停留时间+字体大小+字体颜色+高亮字体颜色
              */
-            [LDToast showBottomWithText:text offset:150 duration:5 highlightRange:NSMakeRange(17, 2) fontSize:20 textColor:[UIColor greenColor] highlightColor:[UIColor redColor]];
+            [LDToast showBottomWithText:text
+                                 offset:150
+                               duration:5
+                         highlightRange:NSMakeRange(17, 2)
+                               fontSize:20
+                              textColor:[UIColor greenColor]
+                      highlightFontSize:0
+                         highlightColor:[UIColor redColor]];
         }
     }
     else if(indexPath.section==3) {
-        if(indexPath.row==0) {
+        if(indexPath.row == 0) {
             /**
              *  左下方显示高亮文字
              */
-            [LDToast showToastAtLeftBottomWithText:text duration:3.f highlightRange:NSMakeRange(5, 2)];
+            [LDToast showCustomToastWithText:text
+                                    duration:5
+                              highlightRange:NSMakeRange(5, 2)];
+        }
+        if (indexPath.row == 1) {
+            /**
+             *  左下方显示自定义高亮文字
+             */
+            [LDToast showCustomToastWithText:text
+                                    duration:5
+                              highlightRange:NSMakeRange(5, 3)
+                                    fontSize:0 textColor:nil
+                           highlightFontSize:20
+                              highlightColor:[UIColor redColor]];
         }
     }
 }
