@@ -37,7 +37,7 @@
         
         UIFont *font = [UIFont boldSystemFontOfSize:16];
         NSDictionary * dict=[NSDictionary dictionaryWithObject: font forKey:NSFontAttributeName];
-        CGRect rect=[text boundingRectWithSize:CGSizeMake(250,CGFLOAT_MAX) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil];
+        CGRect rect=[text boundingRectWithSize:CGSizeMake([[UIScreen mainScreen] bounds].size.width - 80,CGFLOAT_MAX) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil];
         UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,rect.size.width + 40, rect.size.height+ 20)];
         textLabel.backgroundColor = [UIColor clearColor];
         textLabel.textColor = [UIColor whiteColor];
@@ -70,13 +70,13 @@
         [attributedStr addAttribute:NSForegroundColorAttributeName
                               value:((highlightColor == nil) ? ToastHighlightColor : highlightColor)
                               range:range];
-        UIFont *font = [UIFont boldSystemFontOfSize:ToastFontSize];
+        UIFont *font = [UIFont boldSystemFontOfSize:(fontSize>highlightFontSize?(fontSize>ToastFontSize?fontSize:ToastFontSize):(highlightFontSize>ToastFontSize?highlightFontSize:ToastFontSize))];
         NSDictionary * dict=[NSDictionary dictionaryWithObject:font
                                                         forKey:NSFontAttributeName];
-        CGRect rect=[text boundingRectWithSize:CGSizeMake(280, CGFLOAT_MAX)
+        CGRect rect=[text boundingRectWithSize:CGSizeMake([[UIScreen mainScreen] bounds].size.width - 80, CGFLOAT_MAX)
                                        options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin
                                     attributes:dict context:nil];
-        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,rect.size.width + 40, rect.size.height+ 20)];
+        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,rect.size.width + 40, rect.size.height + 20)];
         
         textLabel.backgroundColor = [UIColor clearColor];
         textLabel.textColor = ((textColor == nil) ? ToastTextColor : textColor);
@@ -182,10 +182,10 @@
                       textColor:(UIColor *)textColor
               highlightFontSize:(CGFloat)highlightFontSize
                  highlightColor:(UIColor *)highlightColor {
-    UIFont *font = [UIFont boldSystemFontOfSize:ToastFontSize];
-    NSDictionary * dict=[NSDictionary dictionaryWithObject: font
+    UIFont *font = [UIFont boldSystemFontOfSize:(fontSize>highlightFontSize?(fontSize>ToastFontSize?fontSize:ToastFontSize):(highlightFontSize>ToastFontSize?highlightFontSize:ToastFontSize))];
+    NSDictionary * dict=[NSDictionary dictionaryWithObject:font
                                                     forKey:NSFontAttributeName];
-    CGRect rect=[text boundingRectWithSize:CGSizeMake(250,CGFLOAT_MAX)
+    CGRect rect=[text boundingRectWithSize:CGSizeMake([[UIScreen mainScreen] bounds].size.width - 80,CGFLOAT_MAX)
                                    options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin
                                 attributes:dict context:nil];
     CGSize size = CGSizeMake([[UIScreen mainScreen] bounds].size.width, rect.size.height + 20);
